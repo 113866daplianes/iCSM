@@ -398,6 +398,7 @@ async function submitAdminLogin(event) {
     adminSessionToken = result.token;
     pinInput.value = "";
     showScreen("adminDashboard");
+    await loadAdminOverview();
   } catch (error) {
     showError("adminLoginError", error.message || "Unable to verify administrator access.");
     pinInput.value = "";
@@ -406,6 +407,138 @@ async function submitAdminLogin(event) {
     button.disabled = false;
     button.textContent = "Unlock Admin Dashboard";
   }
+}
+
+
+function selectedAnalyticsFilters() {
+  return {
+    year: Number(document.getElementById("analyticsYear").value),
+    periodType: document.getElementById("analyticsPeriodType").value,
+    period: document.getElementById("analyticsPeriod").value
+  };
+}
+
+function configureAnalyticsPeriodOptions() {
+  const type = document.getElementById("analyticsPeriodType").value;
+  const wrap = document.getElementById("analyticsPeriodWrap");
+  const select = document.getElementById("analyticsPeriod");
+  wrap.hidden = type === "all";
+  const options = type === "quarter"
+    ? [["1", "Q1 · January–March"], ["2", "Q2 · April–June"], ["3", "Q3 · July–September"], ["4", "Q4 · October–December"]]
+    : [["1", "January"], ["2", "February"], ["3", "March"], ["4", "April"], ["5", "May"], ["6", "June"], ["7", "July"], ["8", "August"], ["9", "September"], ["10", "October"], ["11", "November"], ["12", "December"]];
+  select.innerHTML = options.map(([value, label]) => `<option value="${value}">${label}</option>`).join("");
+  if (type === "quarter") {
+    const month = new Date().getMonth() + 1;
+    select.value = String(Math.ceil(month / 3));
+  } else if (type === "month") select.value = String(new Date().getMonth() + 1);
+}
+
+function formatCount(value) { return Number(value || 0).toLocaleString("en-PH"); }
+function safeText(value) { return escapeHtml(String(value === null || value === undefined ? "" : value)); }
+
+function renderMetricRows(object, total) {
+  const entries = Object.entries(object || {}).sort((a, b) => b[1] - a[1]);
+  if (!entries.length) return `<p class="analytics-empty">No data available for this period.</p>`;
+  return `<div class="analytics-metric-list">${entries.map(([label, count]) => {
+    const percent = total ? Math.round(count / total * 100) : 0;
+    return `<div class="analytics-metric-row"><div class="analytics-metric-label"><span>${safeText(label)}</span><b>${formatCount(count)} <small>${percent}%</small></b></div><div class="analytics-track"><span style="width:${percent}%"></span></div></div>`;
+  }).join("")}</div>`;
+}
+
+function renderDonut(object, total) {
+  const entries = Object.entries(object || {}).filter(([, value]) => Number(value) > 0).sort((a, b) => b[1] - a[1]);
+  if (!entries.length || !total) return `<p class="analytics-empty">No data available for this period.</p>`;
+  const colors = ["#e97822", "#f5b45e", "#7b9db7", "#70a982", "#c58aaf", "#9a9da5"];
+  let offset = 0;
+  const stops = entries.map(([label, value], index) => {
+    const start = offset;
+    offset += value / total * 100;
+    return `${colors[index % colors.length]} ${start}% ${offset}%`;
+  });
+  return `<div class="donut-layout"><div class="analytics-donut" style="background:conic-gradient(${stops.join(",")})"><div><b>${formatCount(total)}</b><small>responses</small></div></div><div class="donut-legend">${entries.map(([label, value], index) => `<div><i style="background:${colors[index % colors.length]}"></i><span>${safeText(label)}</span><b>${formatCount(value)}</b></div>`).join("")}</div></div>`;
+}
+
+function renderAssessment(items) {
+  const icons = { positive: "✓", watch: "◷", priority: "!", info: "i" };
+  return (items || []).map(item => `<article class="assessment-card assessment-${safeText(item.level)}"><span class="assessment-icon">${icons[item.level] || "i"}</span><div><h4>${safeText(item.title)}</h4><p>${safeText(item.message)}</p></div></article>`).join("");
+}
+
+function renderTrend(items) {
+  if (!items || !items.length) return `<p class="analytics-empty">No response trend available.</p>`;
+  const max = Math.max(1, ...items.map(item => item.count));
+  return `<div class="trend-bars">${items.map(item => `<div class="trend-column"><div class="trend-value">${item.count || ""}</div><div class="trend-bar-track"><span style="height:${Math.max(item.count ? 5 : 0, item.count / max * 100)}%"></span></div><small>${safeText(item.label)}</small></div>`).join("")}</div>`;
+}
+
+function renderSqd(items) {
+  if (!items || !items.some(item => item.average !== null)) return `<p class="analytics-empty">No valid SQD ratings are available for this period.</p>`;
+  return items.map(item => {
+    const avg = item.average;
+    const width = avg === null ? 0 : Math.max(0, Math.min(100, avg / 5 * 100));
+    const state = avg === null ? "unrated" : avg < 3 ? "low" : avg < 4 ? "moderate" : "good";
+    return `<div class="sqd-rating-card"><div class="sqd-rating-top"><b>${safeText(item.key)}</b><strong>${avg === null ? "—" : avg.toFixed(2)}<small>/5</small></strong></div><div class="analytics-track sqd-track ${state}"><span style="width:${width}%"></span></div><div class="sqd-rating-bottom"><span>${formatCount(item.total)} rated</span><span>${formatCount(item.counts["N/A"])} N/A</span></div><div class="sqd-distribution">${[5,4,3,2,1].map(n => `<span title="${n}: ${item.counts[String(n)]}" style="height:${Math.max(3,item.counts[String(n)] / Math.max(1,...[1,2,3,4,5].map(v=>item.counts[String(v)]))*28)}px"></span>`).join("")}</div></div>`;
+  }).join("");
+}
+
+function renderOverview(data) {
+  document.getElementById("analyticsDateRange").textContent = `Showing ${data.period.start} to ${data.period.end} · ${formatCount(data.totalResponses)} response(s)`;
+  const overall = data.overallSqdAverage === null ? "—" : data.overallSqdAverage.toFixed(2);
+  const citizens = data.clientTypes?.Citizen || 0;
+  const government = Object.entries(data.clientTypes || {}).filter(([key]) => key.toLowerCase().includes("government")).reduce((sum, [, value]) => sum + value, 0);
+  document.getElementById("analyticsKpis").innerHTML = `
+    <article class="analytics-kpi"><span>Total Responses</span><strong>${formatCount(data.totalResponses)}</strong><small>Submitted surveys</small></article>
+    <article class="analytics-kpi"><span>Overall SQD Average</span><strong>${overall}<em>/5</em></strong><small>${data.overallSqdAverage === null ? "No ratings yet" : "Across valid SQD ratings"}</small></article>
+    <article class="analytics-kpi"><span>Citizen Clients</span><strong>${formatCount(citizens)}</strong><small>Respondents classified as citizens</small></article>
+    <article class="analytics-kpi"><span>Government Clients</span><strong>${formatCount(government)}</strong><small>Respondents from government</small></article>`;
+  document.getElementById("analyticsAssessment").innerHTML = renderAssessment(data.assessment);
+  document.getElementById("analyticsTrend").innerHTML = renderTrend(data.monthly);
+  document.getElementById("analyticsClientProfile").innerHTML = `<h4 class="analytics-subheading">Client type</h4>${renderDonut(data.clientTypes, data.totalResponses)}<h4 class="analytics-subheading">Sex</h4>${renderDonut(data.sexes, data.totalResponses)}`;
+  document.getElementById("analyticsSqd").innerHTML = renderSqd(data.sqd);
+  const cc = data.citizenCharter || {};
+  document.getElementById("analyticsCc").innerHTML = ["CC1","CC2","CC3"].map(key => `<h4 class="analytics-subheading">${key}</h4>${renderMetricRows(cc[key], data.totalResponses)}`).join("");
+  document.getElementById("analyticsServices").innerHTML = renderMetricRows(Object.fromEntries((data.services || []).map(item => [item.name, item.count])), data.totalResponses);
+  document.getElementById("analyticsFeedback").innerHTML = data.suggestions?.length ? `<p class="feedback-count">${formatCount(data.suggestionsCount)} response(s) included written suggestions.</p><ul class="feedback-list">${data.suggestions.map(item => `<li>${safeText(item)}</li>`).join("")}</ul>` : `<p class="analytics-empty">No written suggestions were recorded in this period.</p>`;
+  document.getElementById("analyticsDemographics").innerHTML = `<h4 class="analytics-subheading">Age groups</h4>${renderMetricRows(data.ageGroups, data.totalResponses)}`;
+  document.getElementById("analyticsLoading").hidden = true;
+  document.getElementById("analyticsError").hidden = true;
+  document.getElementById("analyticsContent").hidden = false;
+}
+
+async function loadAdminOverview() {
+  const loading = document.getElementById("analyticsLoading");
+  const errorBox = document.getElementById("analyticsError");
+  const content = document.getElementById("analyticsContent");
+  loading.hidden = false; loading.textContent = "Loading office performance data…";
+  errorBox.hidden = true; content.hidden = true;
+  try {
+    const result = await apiRequest("adminGetOverview", { token: adminSessionToken, filters: selectedAnalyticsFilters() });
+    if (!result || result.success !== true) throw new Error("The analytics service returned an invalid response.");
+    const yearSelect = document.getElementById("analyticsYear");
+    const currentYear = Number(yearSelect.value);
+    const years = [...new Set([...(result.availableYears || []), currentYear])].sort((a,b)=>b-a);
+    yearSelect.innerHTML = years.map(year => `<option value="${year}">${year}</option>`).join("");
+    yearSelect.value = String(currentYear);
+    renderOverview(result);
+  } catch (err) {
+    loading.hidden = true;
+    errorBox.textContent = err.message || "Unable to load analytics. Please log in again if your session has expired.";
+    errorBox.hidden = false;
+    if ((err.message || "").toLowerCase().includes("session")) {
+      adminSessionToken = null;
+      showScreen("adminLogin");
+      showError("adminLoginError", "Your administrator session has expired. Please log in again.");
+    }
+  }
+}
+
+function initializeAnalyticsControls() {
+  const yearSelect = document.getElementById("analyticsYear");
+  const currentYear = new Date().getFullYear();
+  yearSelect.innerHTML = `<option value="${currentYear}">${currentYear}</option>`;
+  configureAnalyticsPeriodOptions();
+  document.getElementById("analyticsPeriodType").addEventListener("change", () => { configureAnalyticsPeriodOptions(); loadAdminOverview(); });
+  document.getElementById("analyticsPeriod").addEventListener("change", loadAdminOverview);
+  yearSelect.addEventListener("change", loadAdminOverview);
+  document.getElementById("adminRefreshButton").addEventListener("click", loadAdminOverview);
 }
 
 async function logoutAdmin() {
@@ -431,6 +564,7 @@ function initialize() {
   renderChoices("cc3Options", "cc3", cc3Choices);
   renderAllSqdQuestions();
   configureDashboardLink();
+  initializeAnalyticsControls();
 
   document.getElementById("consentCheckbox").addEventListener("change", updateProceedButton);
   document.getElementById("proceedButton").addEventListener("click", startSurvey);

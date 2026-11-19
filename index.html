@@ -82,11 +82,37 @@
           <div><div class="step-label">DAPLIAN ELEMENTARY SCHOOL iCSM</div><h2 id="adminDashboardTitle">Admin Dashboard</h2></div>
           <button type="button" class="admin-logout-button" id="adminLogoutButton">Log out ↗</button>
         </div>
-        <div class="admin-welcome-card">
-          <div class="admin-screen-icon" aria-hidden="true">▣</div>
-          <h3>Administrator access confirmed</h3>
-          <p>Your secure Admin Dashboard entry point is ready. The analytics overview, reporting filters, performance insights, and official report generator will be added in the next development phase.</p>
-          <div class="admin-phase-status"><span></span> Phase 1 · Secure access implemented</div>
+        <div class="admin-overview" id="adminOverview">
+          <div class="admin-filter-panel">
+            <div class="admin-filter-heading"><div><h3>Office Performance Overview</h3><p>Review client satisfaction and identify areas for improvement.</p></div><button type="button" class="admin-refresh-button" id="adminRefreshButton">↻ Refresh</button></div>
+            <div class="admin-filters">
+              <label>Year<select id="analyticsYear"></select></label>
+              <label>Reporting period<select id="analyticsPeriodType"><option value="all">Full year</option><option value="quarter">Quarter</option><option value="month">Month</option></select></label>
+              <label id="analyticsPeriodWrap" hidden>Period<select id="analyticsPeriod"></select></label>
+            </div>
+            <div class="admin-period-caption" id="analyticsDateRange">Loading reporting period…</div>
+          </div>
+          <div class="admin-loading" id="analyticsLoading">Loading office performance data…</div>
+          <div class="admin-error" id="analyticsError" role="alert" hidden></div>
+          <div id="analyticsContent" hidden>
+            <div class="analytics-kpi-grid" id="analyticsKpis"></div>
+            <section class="analytics-section">
+              <div class="analytics-section-heading"><div><h3>Management Insights</h3><p>Key observations based on the selected reporting period.</p></div></div>
+              <div class="assessment-list" id="analyticsAssessment"></div>
+            </section>
+            <div class="analytics-two-column">
+              <section class="analytics-section"><div class="analytics-section-heading"><div><h3>Response Trend</h3><p>Number of submitted surveys by month.</p></div></div><div id="analyticsTrend" class="analytics-chart"></div></section>
+              <section class="analytics-section"><div class="analytics-section-heading"><div><h3>Client Profile</h3><p>Who provided feedback?</p></div></div><div id="analyticsClientProfile"></div></section>
+            </div>
+            <section class="analytics-section"><div class="analytics-section-heading"><div><h3>Service Quality Dimensions</h3><p>Average rating per dimension. N/A responses are excluded from the average.</p></div><div class="analytics-scale">5 = highest · 1 = lowest</div></div><div id="analyticsSqd" class="sqd-analytics-grid"></div></section>
+            <div class="analytics-details-grid">
+              <details class="analytics-section"><summary>Citizen’s Charter (CC1–CC3)</summary><div id="analyticsCc" class="analytics-detail-content"></div></details>
+              <details class="analytics-section"><summary>Services Availed</summary><div id="analyticsServices" class="analytics-detail-content"></div></details>
+              <details class="analytics-section"><summary>Client Feedback</summary><div id="analyticsFeedback" class="analytics-detail-content"></div></details>
+              <details class="analytics-section"><summary>Demographic Profile</summary><div id="analyticsDemographics" class="analytics-detail-content"></div></details>
+            </div>
+            <div class="analytics-footnote">Analytics are based on submitted records within the selected date range. Small sample sizes should be interpreted cautiously. This dashboard is for internal monitoring and does not replace the official CSM submission report.</div>
+          </div>
         </div>
       </section>
 
