@@ -368,51 +368,131 @@ body{margin:0;min-height:100vh;background:
 
 .report-history-delete{border:1px solid #e5b9a0;background:#fff8f3;color:#a3440d;border-radius:7px;padding:7px 11px;font:inherit;font-weight:800;cursor:pointer;white-space:nowrap}.report-history-delete:hover{background:#ffeadc}.report-history-delete:disabled{opacity:.55;cursor:wait}
 
-
-/* Orange Aero header refresh — iDocs-inspired balanced action stack */
-.header-inner{min-height:210px}
-.header-actions{width:314px;min-width:314px;align-items:stretch;gap:12px}
-.dashboard-link,
-.admin-entry-button{
-  width:100%;min-height:78px;justify-content:center;align-self:stretch;
-  border-radius:18px;font-size:18px;font-weight:900;white-space:nowrap;
+/* ==========================================================
+   ORANGE AERO — iSupply-inspired full application theme
+   Dominant orange, glossy glass panels, readable light forms.
+   ========================================================== */
+:root{
+  --orange:#f47716;--orange-dark:#c94b08;--orange-deep:#792607;--gold:#ffc36a;
+  --ink:#26384a;--muted:#647487;--line:#e7a36e;--panel:#fff8f0;--white:#fff;
+  --shadow:0 18px 42px rgba(82,29,4,.28);
 }
-.dashboard-link{
-  gap:12px;padding:12px 18px;
-  background:linear-gradient(180deg,#fff 0%,#fffaf5 58%,#f5dfcc 100%);
-  border:1px solid rgba(255,255,255,.98);
-  color:#87340d;box-shadow:0 5px 0 rgba(112,47,12,.22),0 9px 18px rgba(70,25,5,.14),inset 0 2px 0 #fff;
+body{
+  background:
+    radial-gradient(ellipse at 14% -8%,rgba(255,190,112,.58),transparent 32%),
+    radial-gradient(ellipse at 95% 18%,rgba(255,116,26,.32),transparent 30%),
+    linear-gradient(145deg,#612006 0%,#a83a08 38%,#e9680c 72%,#7e2a05 100%);
+  background-attachment:fixed;
 }
-.dashboard-link img{width:48px;height:48px;border-radius:12px;border:2px solid #e87522}
-.admin-entry-button{
-  display:flex;align-items:center;justify-content:center;gap:11px;
-  padding:12px 18px;border:1px solid rgba(255,255,255,.58);
-  border-radius:18px;
-  background:linear-gradient(180deg,#ff9b37 0%,#f36b0b 48%,#c83b08 100%);
-  color:#fff;font:900 18px "Nunito Sans",Arial,sans-serif;
-  text-shadow:0 1px 2px rgba(95,29,0,.35);
-  box-shadow:0 5px 0 #9f3008,0 9px 18px rgba(70,25,5,.16),inset 0 2px 0 rgba(255,255,255,.45);
+.app-header{
+  border-top:5px solid #ffd79a;border-bottom:1px solid rgba(255,255,255,.58);
+  background:linear-gradient(112deg,#7b2607 0%,#bd4808 40%,#f47716 78%,#d95509 100%);
+  box-shadow:0 9px 24px rgba(55,17,0,.35),inset 0 1px 0 rgba(255,255,255,.5);
 }
-.admin-entry-button:hover{background:linear-gradient(180deg,#ffad51 0%,#f47713 48%,#d94708 100%);transform:translateY(-1px)}
-.admin-entry-icon{font-size:21px;line-height:1}
-.admin-entry-arrow{margin-left:2px;color:#fff0d8;font-size:21px;line-height:1}
+.app-header:before{
+  background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.06) 34%,transparent 62%,rgba(76,19,0,.25));
+}
+.app-header:after{height:2px;background:rgba(255,255,255,.48)}
+.header-inner{max-width:1600px;min-height:176px;padding:22px clamp(20px,4vw,58px)}
+.brand-lockup{gap:20px}
+.app-icon{width:108px;height:108px;border-radius:23px;border:4px solid #fff;box-shadow:0 6px 0 rgba(83,28,4,.3),0 10px 20px rgba(38,10,0,.28),inset 0 2px 0 #fff}
+.school-name{letter-spacing:2.6px;text-shadow:0 2px 3px rgba(65,17,0,.48)}
+.brand-copy h1{font-size:clamp(48px,5vw,68px);text-shadow:0 3px 0 rgba(107,35,4,.38),0 5px 9px rgba(58,16,0,.35)}
+.brand-copy p{font-weight:700;text-shadow:0 2px 3px rgba(65,17,0,.4)}
+.header-actions{width:min(300px,28vw);min-width:260px;align-items:stretch;gap:11px}
+.dashboard-link,.admin-entry-button{width:100%;min-height:64px;justify-content:center;box-sizing:border-box;border-radius:17px;font-size:clamp(14px,1.15vw,18px);font-weight:950;}
+.dashboard-link{gap:11px;padding:9px 15px;border:1px solid #fff;background:linear-gradient(180deg,#fff 0%,#f5faff 46%,#c6d9e9 100%);box-shadow:0 5px 0 rgba(78,32,8,.35),0 9px 17px rgba(40,12,0,.22),inset 0 2px 0 #fff;color:#183b5c}
+.dashboard-link img{width:48px;height:48px;border-radius:12px}
+.admin-entry-button{align-self:stretch;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 15px;border:1px solid rgba(255,255,255,.75);background:linear-gradient(180deg,#ffbd70 0%,#f47716 48%,#c94b08 100%);color:#fff;text-shadow:0 1px 2px rgba(91,28,0,.55);box-shadow:0 5px 0 #7e2b08,0 9px 17px rgba(40,12,0,.23),inset 0 2px 0 rgba(255,255,255,.65);font-size:clamp(14px,1.15vw,18px)}
+.admin-entry-button:hover{background:linear-gradient(180deg,#ffd09a,#fa8528 48%,#d9540b);transform:translateY(-1px)}
+.admin-button-icon{font-size:19px;line-height:1}
+.admin-button-arrow{font-size:19px;color:#fff0d8;margin-left:2px}
+.app-shell{width:min(100% - 28px,1600px);margin:22px auto 30px;border:1px solid rgba(255,255,255,.42);border-radius:23px;background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(255,247,237,.97));box-shadow:0 15px 38px rgba(49,14,0,.32),inset 0 1px 0 rgba(255,255,255,.95)}
+.main-content{padding:clamp(24px,3.5vw,48px) clamp(18px,4vw,58px);}
+.footer{background:linear-gradient(110deg,#742506,#b94308 48%,#ed6d10);box-shadow:inset 0 2px 0 rgba(255,255,255,.35)}
+/* Glossy Orange Aero surfaces for welcome, login and survey steps */
+.welcome-emblem{background:linear-gradient(145deg,#ffe0ad,#ff9a37 48%,#c84b08);box-shadow:0 5px 0 rgba(135,52,7,.2),0 9px 18px rgba(135,52,7,.22),inset 0 2px 0 #fff}
+.privacy-panel,.admin-login-card,.admin-welcome-card,.cc-question,.sqd-question,.picker-dialog{
+  border:1px solid #e7a36e;background:linear-gradient(145deg,#fffefa 0%,#fff4e8 100%);
+  box-shadow:0 5px 0 rgba(156,72,15,.09),0 10px 22px rgba(91,36,5,.08),inset 0 1px 0 #fff;
+}
+.privacy-panel h3,.page-heading,.section-title,.welcome-screen h2{color:#9b3908}
+.privacy-icon,.page-dot.active{background:linear-gradient(145deg,#ffd28e,#f47716 58%,#c84b08);box-shadow:0 3px 0 rgba(129,44,5,.22),inset 0 2px 0 rgba(255,255,255,.65)}
+.primary-button{border:1px solid #a83c06;background:linear-gradient(180deg,#ffd08e 0%,#ff982f 35%,#ed6b10 66%,#bd4307 100%);box-shadow:0 4px 0 #8b2e05,0 8px 15px rgba(184,70,8,.24),inset 0 2px 0 rgba(255,255,255,.72)}
+.primary-button:active:not(:disabled){box-shadow:0 2px 0 #8b2e05}
+.secondary-button{border:1px solid #a7c0d2;background:linear-gradient(180deg,#f8fdff 0%,#cbddea 50%,#8caabd 100%);color:#183e5b;text-shadow:0 1px 0 #fff;box-shadow:0 4px 0 #53758b,0 7px 12px rgba(23,56,76,.14),inset 0 2px 0 #fff}
+.aero-button{border-radius:12px}
+.picker-button,.fixed-date,.form-field input:not([type=hidden]),.form-field textarea,.admin-login-card input,.admin-filters select,.report-form-grid select{
+  border:1px solid #d9b99f;background:linear-gradient(180deg,#fff 0%,#f8fbfd 100%);box-shadow:inset 0 2px 4px rgba(53,37,25,.06),0 1px 0 #fff;
+}
+.picker-button:focus-visible,.form-field input:focus,.form-field textarea:focus,.admin-filters select:focus,.report-form-grid select:focus{outline:none;border-color:#f47716;box-shadow:0 0 0 3px rgba(244,119,22,.2),inset 0 2px 4px rgba(53,37,25,.04)}
+.choice-button,.rating-option{background:linear-gradient(180deg,#fff 0%,#fff8f1 100%);border-color:#e6c5aa;box-shadow:0 2px 0 rgba(135,63,14,.06),inset 0 1px 0 #fff}
+.choice-button:hover,.rating-option:hover{border-color:#f47716;background:linear-gradient(180deg,#fffaf3,#ffead5)}
+.choice-button.selected,.rating-option.selected{border-color:#d85b0a;background:linear-gradient(180deg,#ffe3bd,#ffb45d);color:#74300a;box-shadow:0 3px 0 rgba(153,57,5,.17),inset 0 2px 0 rgba(255,255,255,.72)}
+/* Admin dashboard: orange glass navigation and warm, readable submenus */
+.admin-topbar{border-bottom:1px solid #e8b58c}
+.admin-topbar h2,.admin-page-heading h3,.admin-section-title h3{color:#983706}
+.admin-logout-button,.admin-refresh-button{border:1px solid #d97a36;background:linear-gradient(180deg,#fff1df,#ffd3a5);color:#873707;box-shadow:0 3px 0 rgba(145,58,8,.14),inset 0 1px 0 #fff}
+.admin-section-nav{padding:11px 12px;margin:12px -4px 19px;border:1px solid rgba(255,255,255,.5);border-radius:15px;background:linear-gradient(115deg,#7e2a08,#c64c08 54%,#f47716);box-shadow:0 5px 0 rgba(112,42,5,.2),inset 0 2px 0 rgba(255,255,255,.32)}
+.admin-nav-link{border:1px solid rgba(255,255,255,.76);border-radius:11px;background:linear-gradient(180deg,#fff 0%,#fff2e3 52%,#f2d1b4 100%);color:#78320d;box-shadow:0 3px 0 rgba(91,30,2,.2),inset 0 1px 0 #fff}
+.admin-nav-link:hover,.admin-nav-link:focus-visible{border-color:#fff;background:linear-gradient(180deg,#fff8ed,#ffd9b2);color:#8e3508}
+.admin-nav-link.active{border-color:#fff;background:linear-gradient(180deg,#ffd18f,#ff982f 48%,#d95309);color:#fff;text-shadow:0 1px 2px rgba(105,34,0,.45);box-shadow:0 3px 0 #853006,0 5px 10px rgba(71,21,0,.2),inset 0 2px 0 rgba(255,255,255,.68)}
+.admin-page-heading{border-bottom:1px solid #e9bd9b}
+.admin-filter-panel,.analytics-section{border:1px solid #e6b58f;border-radius:16px;background:linear-gradient(145deg,#fffefa 0%,#fff3e7 100%);box-shadow:0 4px 0 rgba(149,66,12,.08),0 9px 20px rgba(85,31,4,.08),inset 0 1px 0 #fff}
+.admin-filter-heading h3,.analytics-section-heading h3,.report-history-heading h4{color:#963707}
+.admin-filter-heading p,.analytics-section-heading p{color:#657485}
+.analytics-kpi,.assessment-card,.sqd-rating-card{border:1px solid #e8c8ad;background:linear-gradient(145deg,#fff 0%,#fff7ef 100%);box-shadow:0 3px 0 rgba(139,62,12,.07),inset 0 1px 0 #fff}
+.analytics-kpi strong,.sqd-rating-top strong{color:#c44e08}
+.assessment-positive{border-color:#b9d9c0;background:linear-gradient(145deg,#fff,#eff9f0)}
+.assessment-watch{border-color:#ecd29c;background:linear-gradient(145deg,#fffefa,#fff6df)}
+.assessment-priority{border-color:#e8b7aa;background:linear-gradient(145deg,#fff,#fff0ec)}
+.trend-bar-track{background:#ffead6}
+.trend-bar-track span,.analytics-track>span{background:linear-gradient(180deg,#ffd08b,#f47716 58%,#c84b08)}
+.analytics-details-grid .analytics-section{background:linear-gradient(145deg,#fffefa,#fff2e5)}
+.analytics-details-grid summary{color:#963707;background:linear-gradient(180deg,#fff8ef,#ffe7d0);border-bottom:1px solid #efd0b5}
+.analytics-details-grid summary:after{color:#d65b0b}
+.analytics-warning{background:#fff0df;border-color:#e9b17e;color:#7d390c}
+.analytics-note{background:#eef8f0;border-color:#bfdfc6;color:#285b35}
+/* Report cards and history: orange header bars, clean white data surfaces */
+.report-badge,.report-mode-icon{background:linear-gradient(145deg,#ffe2bd,#ffb05a);color:#9a3b08;border:1px solid #e6a16a;box-shadow:inset 0 1px 0 #fff}
+.report-mode-card{border:1px solid #e6ad7f;border-radius:16px;background:linear-gradient(145deg,#fffefa 0%,#fff0df 100%);box-shadow:0 4px 0 rgba(143,57,7,.1),0 8px 18px rgba(85,31,4,.07),inset 0 1px 0 #fff}
+.report-mode-card h4{color:#963707}
+.report-mode-card p,.report-mode-card li{color:#526577}
+.report-schedule-note,.report-period-preview,.report-template-note{background:linear-gradient(145deg,#fff0df,#ffe0c1);border:1px solid #edc29e;color:#794016}
+.report-generate-button{width:100%}
+.report-history-table-wrap{border:1px solid #dfa276;border-radius:11px;overflow-x:auto;background:#fff;box-shadow:0 3px 0 rgba(130,51,5,.08)}
+.report-history-table th{background:linear-gradient(180deg,#ffb76d 0%,#ef7417 48%,#bd4708 100%);color:#fff;text-shadow:0 1px 2px rgba(92,27,0,.42);border-bottom:1px solid #a83b05}
+.report-history-table td{background:#fff;color:#405367}
+.report-history-table tr:nth-child(even) td{background:#fff8f1}
+.report-history-table td a{color:#a63e06}
+.report-history-delete{border:1px solid #d88b59;background:linear-gradient(180deg,#fff7ed,#ffe0c4);color:#973b08;box-shadow:0 2px 0 rgba(130,51,5,.12)}
+.report-history-delete:hover{background:linear-gradient(180deg,#fff0df,#ffd0a3)}
+.report-result-success{background:linear-gradient(145deg,#f4fff5,#e2f5e5);border-color:#b8d9be}
+.report-result-pending{background:linear-gradient(145deg,#fff9e9,#ffedc9);border-color:#e9d09a}
+.report-result-error{background:linear-gradient(145deg,#fff4f1,#ffe5df);border-color:#e9b7ad}
+/* Keep text-entry and data surfaces bright for legibility */
+.admin-login-card,.admin-welcome-card{background:linear-gradient(145deg,#fffefa,#fff1e2)}
+.admin-login-card>label,.form-field>label,.question-label{color:#35495b}
+.analytics-empty,.admin-period-caption,.analytics-footnote{color:#667789}
 @media(max-width:760px){
-  .header-inner{align-items:center;flex-wrap:wrap}
-  .brand-lockup{flex:1 1 100%}
-  .header-actions{width:100%;min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .dashboard-link,.admin-entry-button{min-height:58px;padding:9px 10px;border-radius:14px;font-size:14px}
-  .dashboard-link img{width:34px;height:34px}
-  .admin-entry-icon{font-size:17px}
-  .admin-entry-arrow{font-size:17px}
+ .header-inner{min-height:150px;padding:18px 20px}
+ .app-icon{width:88px;height:88px}
+ .header-actions{width:235px;min-width:220px;align-items:stretch}
+ .dashboard-link,.admin-entry-button{min-height:54px;font-size:13px}
+ .dashboard-link img{width:40px;height:40px}
 }
-@media(max-width:430px){
-  .header-inner{padding:16px;gap:14px}
-  .brand-lockup{padding-right:0;gap:11px}
-  .app-icon{width:68px;height:68px;border-radius:15px}
-  .school-name{font-size:9px;letter-spacing:1px}
-  .brand-copy h1{font-size:38px}
-  .brand-copy p{font-size:12px;margin-top:5px}
-  .header-actions{position:static;grid-template-columns:1fr 1fr;width:100%;gap:8px}
-  .dashboard-link,.admin-entry-button{min-height:54px;padding:8px 6px;font-size:12px;gap:6px}
-  .dashboard-link img{width:28px;height:28px}
+@media(max-width:560px){
+ .header-inner{align-items:flex-start;gap:12px}
+ .brand-lockup{gap:12px;padding-right:0}
+ .app-icon{width:68px;height:68px;border-radius:16px;border-width:3px}
+ .school-name{font-size:9px;letter-spacing:1.2px}
+ .brand-copy h1{font-size:36px;letter-spacing:-1px}
+ .brand-copy p{font-size:11px;margin-top:5px}
+ .header-actions{position:static;width:100%;min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+ .dashboard-link,.admin-entry-button{min-height:47px;padding:7px 8px;border-radius:12px;font-size:11px;white-space:normal;gap:6px}
+ .dashboard-link img{width:30px;height:30px}
+ .admin-button-icon,.admin-button-arrow{font-size:15px}
+ .app-shell{width:calc(100% - 14px);margin:9px auto 16px;border-radius:17px}
+ .main-content{padding:22px 14px}
+ .admin-section-nav{border-radius:12px}
 }
