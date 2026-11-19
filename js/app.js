@@ -30,7 +30,9 @@ const serviceChoices = [
   "Form 9 & 10 Release",
   "Other Transactions",
   "School Inquiry",
-  "School Records Request"
+  "School Records Request",
+  "General Service-related",
+  "Public assistance (walk-in/phone call)"
 ];
 const cc1Choices = [
   "I know what a CC is and I saw this office's CC.",
@@ -495,6 +497,10 @@ function renderOverview(data) {
   document.getElementById("analyticsSqd").innerHTML = renderSqd(data.sqd);
   const cc = data.citizenCharter || {};
   document.getElementById("analyticsCc").innerHTML = ["CC1","CC2","CC3"].map(key => `<h4 class="analytics-subheading">${key}</h4>${renderMetricRows(cc[key], data.totalResponses)}`).join("");
+  document.getElementById("analyticsServiceCategories").innerHTML = renderMetricRows(data.serviceCategories || {}, data.totalResponses);
+  document.getElementById("analyticsServiceMappingNotice").innerHTML = (data.unmappedServices || []).length
+    ? `<p class="analytics-warning">${formatCount(data.unmappedServiceCount)} response(s) use service names that are not mapped to an official report category: ${(data.unmappedServices || []).map(safeText).join(", ")}. These must be assigned before official report generation.</p>`
+    : `<p class="analytics-note">All recorded services are assigned to an official report category.</p>`;
   document.getElementById("analyticsServices").innerHTML = renderMetricRows(Object.fromEntries((data.services || []).map(item => [item.name, item.count])), data.totalResponses);
   document.getElementById("analyticsFeedback").innerHTML = data.suggestions?.length ? `<p class="feedback-count">${formatCount(data.suggestionsCount)} response(s) included written suggestions.</p><ul class="feedback-list">${data.suggestions.map(item => `<li>${safeText(item)}</li>`).join("")}</ul>` : `<p class="analytics-empty">No written suggestions were recorded in this period.</p>`;
   document.getElementById("analyticsDemographics").innerHTML = `<h4 class="analytics-subheading">Age groups</h4>${renderMetricRows(data.ageGroups, data.totalResponses)}`;
