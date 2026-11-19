@@ -365,3 +365,5 @@ body{margin:0;min-height:100vh;background:
 .admin-page-heading p{margin:6px 0 0;color:#72808c;font-size:15px;line-height:1.5}
 @keyframes adminPageIn{from{opacity:.55;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:560px){.admin-page-heading{align-items:flex-start}.admin-page-heading h3{font-size:22px}.admin-page-heading p{font-size:14px}}
+
+.report-history-delete{border:1px solid #e5b9a0;background:#fff8f3;color:#a3440d;border-radius:7px;padding:7px 11px;font:inherit;font-weight:800;cursor:pointer;white-space:nowrap}.report-history-delete:hover{background:#ffeadc}.report-history-delete:disabled{opacity:.55;cursor:wait}

@@ -647,7 +647,23 @@ async function loadReportHistory() {
     const result = await apiRequest("adminGetReportHistory", {token: adminSessionToken});
     const items = result.history || [];
     if (!items.length) { container.innerHTML = `<p class="analytics-empty">No reports have been generated yet.</p>`; return; }
-    container.innerHTML = `<div class="report-history-table-wrap"><table class="report-history-table"><thead><tr><th>Report</th><th>Coverage</th><th>Generated</th><th>Mode</th><th>File</th></tr></thead><tbody>${items.map(item => `<tr><td>${safeText(item.label)}</td><td>${safeText(item.start)} – ${safeText(item.end)}</td><td>${safeText(item.generatedAt)}</td><td>${safeText(item.mode)}</td><td><a href="${safeText(item.url)}" target="_blank" rel="noopener">Open ↗</a></td></tr>`).join("")}</tbody></table></div>`;
+    container.innerHTML = `<div class="report-history-table-wrap"><table class="report-history-table"><thead><tr><th>Report</th><th>Coverage</th><th>Generated</th><th>Mode</th><th>File</th><th>Action</th></tr></thead><tbody>${items.map(item => `<tr><td>${safeText(item.label)}</td><td>${safeText(item.start)} – ${safeText(item.end)}</td><td>${safeText(item.generatedAt)}</td><td>${safeText(item.mode)}</td><td><a href="${safeText(item.url)}" target="_blank" rel="noopener">Open ↗</a></td><td><button type="button" class="report-history-delete" data-file-id="${safeText(item.id)}" data-report-label="${safeText(item.label)}">Remove</button></td></tr>`).join("")}</tbody></table></div>`;
+    container.querySelectorAll(".report-history-delete").forEach(button => {
+      button.addEventListener("click", async () => {
+        const label = button.dataset.reportLabel || "this report";
+        if (!window.confirm(`Remove ${label} from Report History? Its Google Drive file will also be moved to Trash.`)) return;
+        button.disabled = true;
+        button.textContent = "Removing…";
+        try {
+          await apiRequest("adminDeleteCsmReport", {token: adminSessionToken, fileId: button.dataset.fileId});
+          await loadReportHistory();
+        } catch (error) {
+          button.disabled = false;
+          button.textContent = "Remove";
+          alert(error.message || "Unable to remove this report.");
+        }
+      });
+    });
   } catch (error) {
     container.innerHTML = `<p class="analytics-warning">${safeText(error.message || "Unable to load report history.")}</p>`;
   }
