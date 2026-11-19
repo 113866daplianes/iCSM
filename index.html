@@ -21,10 +21,15 @@
           <p>Client Satisfaction Measurement</p>
         </div>
       </div>
-      <a class="dashboard-link" href="#" id="dashboardLink" aria-label="Go to iApps Dashboard">
-        <img src="assets/icsm-icon.png" alt="">
-        <span>Go to iApps Dashboard <b aria-hidden="true">↗</b></span>
-      </a>
+      <div class="header-actions">
+        <a class="dashboard-link" href="#" id="dashboardLink" aria-label="Go to iApps Dashboard">
+          <img src="assets/icsm-icon.png" alt="">
+          <span>Go to iApps Dashboard <b aria-hidden="true">↗</b></span>
+        </a>
+        <button type="button" class="admin-entry-button" id="adminEntryButton">
+          <span aria-hidden="true">▣</span> Admin Dashboard
+        </button>
+      </div>
     </div>
   </header>
 
@@ -55,6 +60,34 @@
         </button>
         <p class="button-hint" id="buttonHint">Please read the notice and provide your consent to continue.</p>
         <div class="notice" id="developmentNotice" role="status">Checking connection to the iCSM server…</div>
+      </section>
+
+      <section class="admin-login-screen" id="adminLoginScreen" hidden aria-labelledby="adminLoginTitle">
+        <div class="admin-screen-icon" aria-hidden="true">▣</div>
+        <div class="step-label">AUTHORIZED PERSONNEL ONLY</div>
+        <h2 class="section-title" id="adminLoginTitle">Administrator Login</h2>
+        <p class="admin-description">Enter the administrator PIN to access the DES iCSM dashboard.</p>
+        <form id="adminLoginForm" class="admin-login-card" novalidate>
+          <label for="adminPinInput">Administrator PIN</label>
+          <input id="adminPinInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="12" autocomplete="off" placeholder="Enter PIN" required>
+          <div class="form-error" id="adminLoginError" role="alert" hidden></div>
+          <button type="submit" class="aero-button primary-button" id="adminLoginButton">Unlock Admin Dashboard</button>
+          <button type="button" class="aero-button secondary-button admin-cancel-button" id="adminCancelButton">← Back to Welcome</button>
+        </form>
+        <p class="admin-security-note"><span aria-hidden="true">🔒</span> Access is verified securely by the iCSM server.</p>
+      </section>
+
+      <section class="admin-dashboard-screen" id="adminDashboardScreen" hidden aria-labelledby="adminDashboardTitle">
+        <div class="admin-topbar">
+          <div><div class="step-label">DAPLIAN ELEMENTARY SCHOOL iCSM</div><h2 id="adminDashboardTitle">Admin Dashboard</h2></div>
+          <button type="button" class="admin-logout-button" id="adminLogoutButton">Log out ↗</button>
+        </div>
+        <div class="admin-welcome-card">
+          <div class="admin-screen-icon" aria-hidden="true">▣</div>
+          <h3>Administrator access confirmed</h3>
+          <p>Your secure Admin Dashboard entry point is ready. The analytics overview, reporting filters, performance insights, and official report generator will be added in the next development phase.</p>
+          <div class="admin-phase-status"><span></span> Phase 1 · Secure access implemented</div>
+        </div>
       </section>
 
       <section class="workflow-screen" id="csmScreen" hidden aria-labelledby="csmTitle">

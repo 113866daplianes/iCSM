@@ -44,3 +44,6 @@ After a successful CSM submission, the app displays the generated survey control
 
 ## Header visibility
 The header's Go to iApps Dashboard shortcut is visible only on the main welcome screen. It is hidden during the survey and on the thank-you screen.
+
+## Admin access — Phase 1
+A discreet Admin Dashboard button is shown below the iApps Dashboard shortcut on the welcome screen. The PIN is verified by Apps Script; it is not stored in frontend code. Successful login creates a 30-minute server-side session. The current admin screen is a protected foundation; analytics and report generation will be added in subsequent phases.

@@ -11,6 +11,7 @@ let apiOnline = false;
 let activePicker = null;
 let thankYouTimer = null;
 let countdownValue = 5;
+let adminSessionToken = null;
 
 const clientTypeChoices = [
   "Citizen",
@@ -115,7 +116,9 @@ function showScreen(screen) {
   document.getElementById("welcomeScreen").hidden = screen !== "welcome";
   document.getElementById("csmScreen").hidden = screen !== "survey";
   document.getElementById("successScreen").hidden = screen !== "success";
-  // The dashboard shortcut is displayed only on the main welcome screen.
+  document.getElementById("adminLoginScreen").hidden = screen !== "adminLogin";
+  document.getElementById("adminDashboardScreen").hidden = screen !== "adminDashboard";
+  // The dashboard shortcut and discreet admin entry are welcome-screen only.
   document.getElementById("appHeader").hidden = screen !== "welcome";
   window.scrollTo({ top: 0, behavior: "instant" });
 }
@@ -370,6 +373,51 @@ function resetKioskToWelcome() {
   updateProceedButton();
 }
 
+async function openAdminLogin() {
+  clearError("adminLoginError");
+  document.getElementById("adminPinInput").value = "";
+  showScreen("adminLogin");
+  document.getElementById("adminPinInput").focus();
+}
+
+async function submitAdminLogin(event) {
+  event.preventDefault();
+  const pinInput = document.getElementById("adminPinInput");
+  const button = document.getElementById("adminLoginButton");
+  clearError("adminLoginError");
+  const pin = pinInput.value.trim();
+  if (!/^\d{6,12}$/.test(pin)) {
+    showError("adminLoginError", "Please enter the administrator PIN.");
+    return;
+  }
+  button.disabled = true;
+  button.textContent = "Verifying…";
+  try {
+    const result = await apiRequest("adminLogin", { pin });
+    if (!result || !result.token) throw new Error("The server did not issue an administrator session.");
+    adminSessionToken = result.token;
+    pinInput.value = "";
+    showScreen("adminDashboard");
+  } catch (error) {
+    showError("adminLoginError", error.message || "Unable to verify administrator access.");
+    pinInput.value = "";
+    pinInput.focus();
+  } finally {
+    button.disabled = false;
+    button.textContent = "Unlock Admin Dashboard";
+  }
+}
+
+async function logoutAdmin() {
+  const token = adminSessionToken;
+  adminSessionToken = null;
+  if (token) {
+    try { await apiRequest("adminLogout", { token }); }
+    catch (error) { console.warn("Admin logout cleanup:", error); }
+  }
+  showScreen("welcome");
+}
+
 function configureDashboardLink() {
   const link = document.getElementById("dashboardLink");
   link.href = DASHBOARD_URL;
@@ -408,6 +456,10 @@ function initialize() {
   document.getElementById("feedbackBackButton").addEventListener("click", () => showSurveyPage("sqd"));
   document.getElementById("csmForm").addEventListener("submit", submitCsm);
   document.getElementById("returnNowButton").addEventListener("click", returnToDashboard);
+  document.getElementById("adminEntryButton").addEventListener("click", openAdminLogin);
+  document.getElementById("adminCancelButton").addEventListener("click", () => showScreen("welcome"));
+  document.getElementById("adminLoginForm").addEventListener("submit", submitAdminLogin);
+  document.getElementById("adminLogoutButton").addEventListener("click", logoutAdmin);
   checkApiConnection();
 }
 

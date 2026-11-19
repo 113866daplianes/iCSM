@@ -128,3 +128,39 @@ body{margin:0;min-height:100vh;background:
  .page-dot{width:40px;height:40px;flex-basis:40px}.page-dot small{font-size:6px}
  .page-line{max-width:17px}
 }
+
+
+/* ADMIN ACCESS — PHASE 1 */
+.header-actions{display:flex;flex-direction:column;align-items:stretch;gap:10px;min-width:245px}
+.admin-entry-button{align-self:flex-end;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid rgba(255,255,255,.58);border-radius:10px;background:rgba(85,24,5,.28);color:#fff;font:800 12px "Nunito Sans",Arial,sans-serif;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.22);transition:background .18s,transform .18s}
+.admin-entry-button:hover{background:rgba(65,17,3,.48);transform:translateY(-1px)}
+.admin-login-screen,.admin-dashboard-screen{max-width:760px;margin:0 auto;padding:12px 0 22px;text-align:center}
+.admin-screen-icon{display:grid;place-items:center;width:64px;height:64px;margin:0 auto 14px;border:1px solid #f2c49e;border-radius:18px;background:linear-gradient(145deg,#fff7ec,#ffdfbf);color:#b9470b;font-size:28px;box-shadow:0 5px 14px rgba(150,67,15,.1)}
+.admin-description{max-width:470px;margin:0 auto 22px;color:var(--muted);font-size:14px;line-height:1.6}
+.admin-login-card{max-width:410px;margin:0 auto;padding:24px;border:1px solid #efd3bd;border-radius:18px;background:linear-gradient(145deg,#fff,#fff8f1);box-shadow:0 10px 28px rgba(112,47,12,.09);text-align:left}
+.admin-login-card>label{display:block;margin-bottom:8px;color:#374858;font-size:13px;font-weight:900}
+.admin-login-card input{display:block;width:100%;min-height:52px;padding:13px 15px;border:1px solid #e5c9b4;border-radius:12px;background:#fff;color:#273b4d;font:800 20px "Nunito Sans",Arial,sans-serif;letter-spacing:5px;text-align:center;outline:none}
+.admin-login-card input:focus{border-color:#ee862f;box-shadow:0 0 0 3px rgba(243,107,11,.13)}
+.admin-login-card .aero-button{width:100%;margin-top:14px}
+.admin-login-card .admin-cancel-button{margin-top:10px}
+.admin-security-note{margin:18px 0 0;color:#7a8792;font-size:11px}
+.admin-topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:18px;border-bottom:1px solid #efd7c4;text-align:left}
+.admin-topbar h2{margin:4px 0 0;color:#9d2b0a;font-size:clamp(25px,3vw,34px);font-weight:900}
+.admin-logout-button{padding:9px 13px;border:1px solid #e4c4ac;border-radius:10px;background:#fff8f1;color:#98400e;font:800 12px "Nunito Sans",Arial,sans-serif;cursor:pointer}
+.admin-welcome-card{max-width:590px;margin:32px auto 8px;padding:30px 24px;border:1px solid #efd3bd;border-radius:18px;background:linear-gradient(145deg,#fff,#fff8f1);box-shadow:0 10px 28px rgba(112,47,12,.08)}
+.admin-welcome-card h3{margin:0 0 8px;color:#9d350b;font-size:21px}
+.admin-welcome-card p{max-width:470px;margin:0 auto;color:#68798a;font-size:14px;line-height:1.65}
+.admin-phase-status{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:9px 13px;border:1px solid #bfe2c8;border-radius:20px;background:#effaf1;color:#28743d;font-size:11px;font-weight:900}
+.admin-phase-status span{width:7px;height:7px;border-radius:50%;background:#32a852}
+@media(max-width:760px){
+ .header-actions{min-width:0;gap:7px;align-items:flex-end}
+ .admin-entry-button{font-size:10px;padding:7px 10px}
+}
+@media(max-width:430px){
+ .header-actions{position:absolute;right:14px;top:17px;z-index:3;gap:7px}
+ .dashboard-link{position:static;min-height:0;padding:7px 9px;border-radius:12px;font-size:0;gap:0}
+ .dashboard-link img{width:39px;height:39px}
+ .admin-entry-button{align-self:flex-end;font-size:9px;padding:6px 8px;white-space:nowrap}
+ .brand-lockup{padding-right:90px}
+ .admin-login-card{padding:19px}
+}
