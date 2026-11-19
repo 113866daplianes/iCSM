@@ -607,8 +607,27 @@ async function generateManualReport() {
   try {
     const result = await apiRequest("adminGenerateCsmReport", data);
     if (!result || !result.report || !result.downloadUrl) throw new Error("The report service returned an incomplete result.");
+
+    let localDownloadStarted = false;
+    if (result.fileBase64 && result.fileName) {
+      const binary = atob(result.fileBase64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      const fileBlob = new Blob([bytes], { type: result.mimeType || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+      const objectUrl = URL.createObjectURL(fileBlob);
+      const downloadLink = document.createElement("a");
+      downloadLink.href = objectUrl;
+      downloadLink.download = result.fileName;
+      downloadLink.style.display = "none";
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      downloadLink.remove();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
+      localDownloadStarted = true;
+    }
+
     resultBox.className = "report-result report-result-success";
-    resultBox.innerHTML = `<strong>Report generated successfully.</strong><span>${safeText(result.report.label)} · ${formatCount(result.totalClients)} client responses</span><a href="${safeText(result.downloadUrl)}" target="_blank" rel="noopener">Download Excel report ↗</a><a href="${safeText(result.report.url)}" target="_blank" rel="noopener">Open in Google Drive</a>`;
+    resultBox.innerHTML = `<strong>Report generated successfully.</strong><span>${safeText(result.report.label)} · ${formatCount(result.totalClients)} client responses</span><span>${localDownloadStarted ? "Your browser download has been initiated." : "The report is saved in Google Drive. Scheduled reports are not downloaded to a local device."}</span><a href="${safeText(result.downloadUrl)}" target="_blank" rel="noopener">Download Excel report again ↗</a><a href="${safeText(result.report.url)}" target="_blank" rel="noopener">Open in Google Drive</a>`;
     await loadReportHistory();
   } catch (error) {
     resultBox.className = "report-result report-result-error";
