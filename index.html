@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f36b0b">
+  <meta name="description" content="Daplian Elementary School iCSM — Client Satisfaction Measurement.">
+  <link rel="icon" type="image/png" href="assets/icsm-icon.png">
+  <link rel="apple-touch-icon" href="assets/icsm-icon.png">
+  <title>DES iCSM | Client Satisfaction Measurement</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-lockup">
+        <img class="app-icon" src="assets/icsm-icon.png" alt="Daplian Elementary School iCSM app icon">
+        <div class="brand-copy">
+          <div class="school-name">Daplian Elementary School</div>
+          <h1>iCSM</h1>
+          <p>Client Satisfaction Measurement</p>
+        </div>
+      </div>
+      <a class="dashboard-link" href="#" id="dashboardLink" aria-label="Go to iApps Dashboard">
+        <img src="assets/icsm-icon.png" alt="">
+        <span>Go to iApps Dashboard <b aria-hidden="true">↗</b></span>
+      </a>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="main-content">
+      <section id="welcomeScreen" class="welcome-screen">
+        <div class="welcome-emblem"><img src="assets/icsm-icon.png" alt="iCSM"></div>
+        <div class="eyebrow">DAPLIAN ELEMENTARY SCHOOL</div>
+        <h2 id="welcomeTitle">Your Feedback Matters!</h2>
+        <p class="intro" id="welcomeIntro">
+          Help us improve the quality of our services. Please take a few minutes
+          to answer our Client Satisfaction Measurement survey.
+        </p>
+
+        <section class="privacy-panel" id="privacyPanel" aria-labelledby="privacyTitle">
+          <h3 id="privacyTitle"><span class="privacy-icon" aria-hidden="true">✓</span> Data Privacy Notice</h3>
+          <p>Daplian Elementary School collects the information requested in this survey to measure client satisfaction and evaluate the quality of services provided by the school.</p>
+          <p>Your responses will be used for service assessment, reporting, and improvement. Access to submitted information will be limited to authorized personnel and handled in accordance with applicable data privacy requirements.</p>
+          <p>Participation is voluntary. You may leave the suggestions and email address fields blank. Please avoid including sensitive personal information in your comments.</p>
+        </section>
+
+        <label class="consent-row" for="consentCheckbox">
+          <input type="checkbox" id="consentCheckbox">
+          <span>I have read and understood the Data Privacy Notice, and I voluntarily agree to participate in this Client Satisfaction Measurement survey.</span>
+        </label>
+        <button type="button" id="proceedButton" class="aero-button primary-button" disabled>
+          Start Survey <span aria-hidden="true">→</span>
+        </button>
+        <p class="button-hint" id="buttonHint">Please read the notice and provide your consent to continue.</p>
+        <div class="notice" id="developmentNotice" role="status">Checking connection to the iCSM server…</div>
+      </section>
+
+      <section class="workflow-screen" id="csmScreen" hidden aria-labelledby="csmTitle">
+        <div class="step-label">CLIENT SATISFACTION MEASUREMENT</div>
+        <h2 class="section-title" id="csmTitle">Client Satisfaction Survey</h2>
+        <div class="page-progress" aria-label="Survey progress">
+          <span class="page-dot active" data-page-dot="client">1 <small>About You</small></span><span class="page-line"></span>
+          <span class="page-dot" data-page-dot="cc">2 <small>Citizen's Charter</small></span><span class="page-line"></span>
+          <span class="page-dot" data-page-dot="sqd">3 <small>Service Quality</small></span><span class="page-line"></span>
+          <span class="page-dot" data-page-dot="feedback">4 <small>Feedback</small></span>
+        </div>
+
+        <form id="csmForm" novalidate>
+          <section class="survey-page" id="surveyPageClient">
+            <h3 class="page-heading">About You</h3>
+            <p class="page-description">Please provide basic information about yourself and the service you availed.</p>
+            <div class="form-field">
+              <label>Client Type <span>*</span></label>
+              <button type="button" class="picker-button" id="clientTypePicker" data-picker="clientType">Choose client type <span>⌄</span></button>
+              <input type="hidden" id="clientType">
+            </div>
+            <div class="form-field">
+              <label>Date</label>
+              <div class="fixed-date"><span aria-hidden="true">📅</span><strong id="surveyDateDisplay">—</strong><small>Automatically set to today</small></div>
+              <input id="surveyDate" type="hidden">
+            </div>
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Sex <span>*</span></label>
+                <button type="button" class="picker-button" id="sexPicker" data-picker="sex">Choose sex <span>⌄</span></button>
+                <input type="hidden" id="sex">
+              </div>
+              <div class="form-field">
+                <label for="age">Age <span>*</span></label>
+                <input id="age" type="number" min="1" max="120" step="1" placeholder="Enter age" required>
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="address">Region of Residence <span>*</span></label>
+              <input id="address" type="text" maxlength="150" placeholder="e.g. Bicol Region" required>
+            </div>
+            <div class="form-field">
+              <label for="serviceAvailed">Service Availed <span>*</span></label>
+              <input id="serviceAvailed" type="text" maxlength="300" placeholder="Enter the service you availed" required>
+            </div>
+            <div class="form-error" id="clientPageError" role="alert" hidden></div>
+            <div class="form-actions page-actions">
+              <button type="button" class="aero-button secondary-button" id="backToWelcomeButton">← Back</button>
+              <button type="button" class="aero-button primary-button" id="clientToCcButton">Continue to CC →</button>
+            </div>
+          </section>
+
+          <section class="survey-page" id="surveyPageCc" hidden>
+            <h3 class="page-heading">Citizen's Charter (CC)</h3>
+            <p class="page-description">Please select the answer that best describes your awareness and experience with the school's Citizen's Charter.</p>
+            <div class="cc-question">
+              <label class="question-label">CC1. Which of the following best describes your awareness of a Citizen's Charter (CC)? <span>*</span></label>
+              <div id="cc1Options" class="choice-list cc-choice-list"></div>
+            </div>
+            <div class="cc-question" id="cc2Field">
+              <label class="question-label">CC2. If aware of the CC, would you say that the CC was...? <span>*</span></label>
+              <div id="cc2Options" class="choice-list cc-choice-list"></div>
+            </div>
+            <div class="cc-question" id="cc3Field">
+              <label class="question-label">CC3. If aware of the CC, how much did the CC help you in your transaction? <span>*</span></label>
+              <div id="cc3Options" class="choice-list cc-choice-list"></div>
+            </div>
+            <div class="form-error" id="ccPageError" role="alert" hidden></div>
+            <div class="form-actions page-actions">
+              <button type="button" class="aero-button secondary-button" id="ccBackButton">← Previous</button>
+              <button type="button" class="aero-button primary-button" id="ccToSqdButton">Continue to SQD →</button>
+            </div>
+          </section>
+
+          <section class="survey-page" id="surveyPageSqd" hidden>
+            <h3 class="page-heading">Service Quality Dimensions (SQD)</h3>
+            <p class="page-description">Select one emoji response for each of the nine statements.</p>
+            <div id="sqdAllQuestions" class="sqd-all-questions"></div>
+            <div class="form-error" id="sqdPageError" role="alert" hidden></div>
+            <div class="form-actions page-actions">
+              <button type="button" class="aero-button secondary-button" id="sqdBackButton">← Previous</button>
+              <button type="button" class="aero-button primary-button" id="sqdToFeedbackButton">Continue to Feedback →</button>
+            </div>
+          </section>
+
+          <section class="survey-page" id="surveyPageFeedback" hidden>
+            <h3 class="page-heading">Feedback and Contact Information</h3>
+            <p class="page-description">Your comments are optional but greatly appreciated.</p>
+            <div class="form-field">
+              <label for="suggestions">Suggestions / Comments <small>(Optional)</small></label>
+              <textarea id="suggestions" rows="5" maxlength="2000" placeholder="Share your suggestions or comments"></textarea>
+            </div>
+            <div class="form-field">
+              <label for="emailAddress">Email Address <small>(Optional)</small></label>
+              <input id="emailAddress" type="email" maxlength="200" placeholder="name@example.com">
+            </div>
+            <div class="form-error" id="feedbackPageError" role="alert" hidden></div>
+            <div class="form-actions page-actions">
+              <button type="button" class="aero-button secondary-button" id="feedbackBackButton">← Previous</button>
+              <button type="submit" class="aero-button primary-button" id="submitCsmButton">Submit Survey ✓</button>
+            </div>
+          </section>
+        </form>
+      </section>
+
+      <section class="workflow-screen result-screen" id="successScreen" hidden aria-live="polite">
+        <div class="success-mark" aria-hidden="true">✓</div>
+        <div class="step-label">SURVEY SUCCESSFULLY SUBMITTED</div>
+        <h2 class="section-title">Thank You!</h2>
+        <p class="section-intro">Your response has been recorded. Your feedback will help Daplian Elementary School improve its services.</p>
+        <div class="control-number-panel">
+          <span>YOUR SURVEY REFERENCE NUMBER</span>
+          <strong id="controlNumberValue">—</strong>
+        </div>
+        <p class="reset-message">This kiosk will return to the welcome screen in <strong id="thankYouCountdown">5</strong> seconds.</p>
+        <button type="button" class="aero-button secondary-button" id="returnNowButton">Return to Welcome Now</button>
+      </section>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-brand"><img src="assets/icsm-icon.png" alt=""><span>Daplian Elementary School <b>iCSM</b></span></div>
+      <p class="footer-caption">CLIENT SATISFACTION MEASUREMENT</p>
+      <p class="footer-credit">Daplian Elementary School · DES ICT Innovations · 2026</p>
+    </footer>
+  </main>
+
+  <div class="picker-overlay" id="pickerOverlay" hidden>
+    <div class="picker-dialog" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
+      <div class="picker-header"><h3 id="pickerTitle">Choose an option</h3><button type="button" id="closePickerButton" aria-label="Close">×</button></div>
+      <div class="picker-options" id="pickerOptions"></div>
+    </div>
+  </div>
+  <script src="js/app.js"></script>
+</body>
+</html>
