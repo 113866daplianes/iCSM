@@ -694,18 +694,33 @@ function initialize() {
 document.addEventListener("DOMContentLoaded", initialize);
 
 function initializeAdminSectionNavigation() {
-  const links = [...document.querySelectorAll("[data-admin-nav]")];
-  if (!links.length) return;
-  links.forEach(link => {
-    link.addEventListener("click", event => {
-      event.preventDefault();
-      const target = document.getElementById(link.dataset.adminNav);
-      if (!target) return;
-      links.forEach(item => item.classList.toggle("active", item === link));
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      if (history.replaceState) history.replaceState(null, "", `#${link.dataset.adminNav}`);
+  const links = [...document.querySelectorAll("[data-admin-page]")];
+  const pages = [...document.querySelectorAll("[data-admin-page-view]")];
+  if (!links.length || !pages.length) return;
+
+  function activatePage(pageId) {
+    const target = pages.find(page => page.id === pageId);
+    if (!target) return;
+    pages.forEach(page => {
+      const active = page === target;
+      page.hidden = !active;
+      page.classList.toggle("active", active);
     });
-  });
-}
+    links.forEach(link => {
+      const active = link.dataset.adminPage === pageId;
+      link.classList.toggle("active", active);
+      if (active) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
+    if (history.replaceState) history.replaceState(null, "", `#${pageId}`);
+    const dashboard = document.getElementById("adminDashboardScreen");
+    if (dashboard) dashboard.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  links.forEach(link => link.addEventListener("click", () => activatePage(link.dataset.adminPage)));
+  window.showAdminPage = activatePage;
+  activatePage("overviewPage");
+} 
 
 initializeAdminSectionNavigation();

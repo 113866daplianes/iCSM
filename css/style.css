@@ -354,3 +354,14 @@ body{margin:0;min-height:100vh;background:
  .donut-legend>div{grid-template-columns:10px minmax(0,1fr) auto;font-size:13px}
  .donut-legend span{overflow-wrap:break-word;word-break:normal}
 }
+
+/* Admin dashboard: distinct page navigation (not anchor scrolling) */
+.admin-nav-link{font-family:inherit;cursor:pointer}
+.admin-page-view{display:none;min-width:0;animation:adminPageIn .18s ease-out}
+.admin-page-view.active{display:block}
+.admin-page-view[hidden]{display:none!important}
+.admin-page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:4px 0 18px;padding:4px 2px 12px;border-bottom:1px solid #f0dfd1}
+.admin-page-heading h3{margin:0;color:#8f330e;font-size:25px;font-weight:950}
+.admin-page-heading p{margin:6px 0 0;color:#72808c;font-size:15px;line-height:1.5}
+@keyframes adminPageIn{from{opacity:.55;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:560px){.admin-page-heading{align-items:flex-start}.admin-page-heading h3{font-size:22px}.admin-page-heading p{font-size:14px}}

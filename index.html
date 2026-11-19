@@ -82,14 +82,14 @@
           <div><div class="step-label">DAPLIAN ELEMENTARY SCHOOL iCSM</div><h2 id="adminDashboardTitle">Admin Dashboard</h2></div>
           <button type="button" class="admin-logout-button" id="adminLogoutButton">Log out ↗</button>
         </div>
-        <nav class="admin-section-nav" aria-label="Admin dashboard sections">
-          <a class="admin-nav-link active" href="#officePerformanceSection" data-admin-nav="officePerformanceSection">Office Performance Overview</a>
-          <a class="admin-nav-link" href="#graphsMeasurementsSection" data-admin-nav="graphsMeasurementsSection">Graphs and Measurements</a>
-          <a class="admin-nav-link" href="#reportCenter" data-admin-nav="reportCenter">Generate Report</a>
+        <nav class="admin-section-nav" aria-label="Admin dashboard pages">
+          <button type="button" class="admin-nav-link active" data-admin-page="overviewPage" aria-current="page">Office Performance Overview</button>
+          <button type="button" class="admin-nav-link" data-admin-page="analyticsPage">Graphs and Measurements</button>
+          <button type="button" class="admin-nav-link" data-admin-page="reportsPage">Generate Report</button>
         </nav>
         <div class="admin-overview" id="adminOverview">
           <div class="admin-filter-panel">
-            <div class="admin-filter-heading"><div><h3>Office Performance Overview</h3><p>Review client satisfaction and identify areas for improvement.</p></div><button type="button" class="admin-refresh-button" id="adminRefreshButton">↻ Refresh</button></div>
+            <div class="admin-filter-heading"><div><h3>Reporting Filters</h3><p>Choose the reporting period applied across all dashboard pages.</p></div><button type="button" class="admin-refresh-button" id="adminRefreshButton">↻ Refresh Data</button></div>
             <div class="admin-filters">
               <label>Year<select id="analyticsYear"></select></label>
               <label>Reporting period<select id="analyticsPeriodType"><option value="all">Full year</option><option value="quarter">Quarter</option><option value="month">Month</option></select></label>
@@ -100,14 +100,19 @@
           <div class="admin-loading" id="analyticsLoading">Loading office performance data…</div>
           <div class="admin-error" id="analyticsError" role="alert" hidden></div>
           <div id="analyticsContent" hidden>
-            <div id="officePerformanceSection" class="admin-dashboard-section admin-anchor-section">
-              <div class="analytics-kpi-grid" id="analyticsKpis"></div>
-              <section class="analytics-section">
-              <div class="analytics-section-heading"><div><h3>Management Insights</h3><p>Key observations based on the selected reporting period.</p></div></div>
-                <div class="assessment-list" id="analyticsAssessment"></div>
-              </section>
-            </div>
-            <section id="graphsMeasurementsSection" class="admin-dashboard-section admin-anchor-section">
+            <section class="admin-page-view active" id="overviewPage" data-admin-page-view="overviewPage" aria-labelledby="overviewPageTitle">
+              <div class="admin-page-heading"><div><h3 id="overviewPageTitle">Office Performance Overview</h3><p>Understand how the office is performing and what needs attention.</p></div></div>
+              <div id="officePerformanceSection" class="admin-dashboard-section">
+                <div class="analytics-kpi-grid" id="analyticsKpis"></div>
+                <section class="analytics-section">
+                  <div class="analytics-section-heading"><div><h3>Management Insights</h3><p>Key observations based on the selected reporting period.</p></div></div>
+                  <div class="assessment-list" id="analyticsAssessment"></div>
+                </section>
+              </div>
+            </section>
+            <section class="admin-page-view" id="analyticsPage" data-admin-page-view="analyticsPage" aria-labelledby="analyticsPageTitle">
+              <div class="admin-page-heading"><div><h3 id="analyticsPageTitle">Graphs and Measurements</h3><p>Explore response patterns, client profiles and service quality results.</p></div></div>
+            <section id="graphsMeasurementsSection" class="admin-dashboard-section">
               <div class="admin-section-title"><h3>Graphs and Measurements</h3><p>Explore response patterns, client profiles and service quality results.</p></div>
             <div class="analytics-two-column">
               <section class="analytics-section"><div class="analytics-section-heading"><div><h3>Response Trend</h3><p>Number of submitted surveys by month.</p></div></div><div id="analyticsTrend" class="analytics-chart"></div></section>
@@ -121,7 +126,10 @@
               <details class="analytics-section"><summary>Demographic Profile</summary><div id="analyticsDemographics" class="analytics-detail-content"></div></details>
             </div>
             </section>
-            <section class="analytics-section report-center admin-anchor-section" id="reportCenter">
+            </section>
+            <section class="admin-page-view" id="reportsPage" data-admin-page-view="reportsPage" aria-labelledby="reportsPageTitle">
+            <div class="admin-page-heading"><div><h3 id="reportsPageTitle">Generate Report</h3><p>Create official monthly, quarterly and annual CSM reports.</p></div></div>
+            <section class="analytics-section report-center" id="reportCenter">
               <div class="analytics-section-heading"><div><h3>Official CSM Report Generation</h3><p>Generate the official DepEd CSM Excel submission using the selected survey records.</p></div><span class="report-badge">EXCEL REPORT</span></div>
               <div class="report-mode-grid">
                 <article class="report-mode-card report-automated-card">
@@ -146,6 +154,7 @@
               <div class="report-result" id="reportResult" hidden aria-live="polite"></div>
               <div class="report-history-block"><div class="report-history-heading"><h4>Report Generation History</h4><button type="button" class="admin-refresh-button" id="refreshReportHistoryButton">↻ Refresh History</button></div><div id="reportHistory"><p class="analytics-empty">Loading report history…</p></div></div>
               <p class="report-template-note">The generator uses a Google Sheets-converted copy of the supplied official 85-column Excel template. It does not modify the survey response database.</p>
+            </section>
             </section>
             <div class="analytics-footnote">Analytics are based on submitted records within the selected date range. Small sample sizes should be interpreted cautiously. This dashboard is for internal monitoring and does not replace the official CSM submission report.</div>
           </div>
