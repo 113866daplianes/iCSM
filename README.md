@@ -16,10 +16,10 @@ The frontend uses:
 - `GET ?action=ping` for connection checking
 - `POST` action `submitCSMResponse` for survey submissions
 
-The backend generates the control number during submission. The frontend does not create a separate client-registration record.
+The backend generates the control number during submission. The frontend does not create a separate client-registration record. The Address field is currently sent through the backend's existing `regionOfResidence` payload property and stored in the existing `REGION_OF_RESIDENCE` sheet column; the database schema remains unchanged.
 
 ## Important configuration
-In `js/app.js`, set `DASHBOARD_URL` to the actual DES iApps Dashboard URL. It is intentionally left blank because the exact dashboard URL was not provided.
+In `js/app.js`, `DASHBOARD_URL` is configured to `https://113866daplianes.github.io/ides-apps-hub/`. The dashboard shortcut appears only on the main welcome screen. The thank-you countdown and its immediate-return button both redirect to this dashboard.
 
 ## Survey data mapping
 The Region of Residence field is sent as `regionOfResidence` and is stored by the existing backend in the existing `REGION_OF_RESIDENCE` column. The database schema is not changed by this frontend.
@@ -35,4 +35,12 @@ Upload the contents of this folder to the intended GitHub Pages repository, pres
 - OneCSM API URL and API actions
 
 ## Kiosk behavior
-After a successful CSM submission, the app displays the generated survey control number and a five-second countdown, then resets the form to the welcome screen. The user can also return immediately using the button.
+After a successful CSM submission, the app displays the generated survey control number and a five-second countdown, then resets the form to the welcome screen. The user can also return immediately to the DES iApps Dashboard using the button.
+
+
+## Updated client information
+- Address is prefilled with `Daplian, San Fernando` and remains editable.
+- Service Availed is a dropdown containing the 11 services supplied for this school survey. The service codes shown in the source screenshots are intentionally omitted.
+
+## Header visibility
+The header's Go to iApps Dashboard shortcut is visible only on the main welcome screen. It is hidden during the survey and on the thank-you screen.

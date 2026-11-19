@@ -5,7 +5,7 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbxBTjj-kvxskVgiY4ZIAfHTXO-41OBooGzZXpPQsPQ2jA8IEuF8zWV9BdvWMlrLXQ6b/exec";
 
 // Add the actual DES iApps Dashboard URL here when available.
-const DASHBOARD_URL = "";
+const DASHBOARD_URL = "https://113866daplianes.github.io/ides-apps-hub/";
 
 let apiOnline = false;
 let activePicker = null;
@@ -18,6 +18,19 @@ const clientTypeChoices = [
   "Government (Employee or another agency)"
 ];
 const sexChoices = ["Male", "Female"];
+const serviceChoices = [
+  "4Ps Certification",
+  "Certificate of Completion",
+  "Certificate of Enrollment",
+  "Certificate of Transfer / Good Standing",
+  "Certification of Good Moral Character",
+  "Certification of Grades",
+  "Certification of Missing Form 137",
+  "Form 9 & 10 Release",
+  "Other Transactions",
+  "School Inquiry",
+  "School Records Request"
+];
 const cc1Choices = [
   "I know what a CC is and I saw this office's CC.",
   "I know what a CC is but I did NOT see this office's CC.",
@@ -102,6 +115,8 @@ function showScreen(screen) {
   document.getElementById("welcomeScreen").hidden = screen !== "welcome";
   document.getElementById("csmScreen").hidden = screen !== "survey";
   document.getElementById("successScreen").hidden = screen !== "success";
+  // The dashboard shortcut is displayed only on the main welcome screen.
+  document.getElementById("appHeader").hidden = screen !== "welcome";
   window.scrollTo({ top: 0, behavior: "instant" });
 }
 
@@ -137,8 +152,14 @@ function showSurveyPage(page) {
 
 function openPicker(type) {
   activePicker = type;
-  const choices = type === "clientType" ? clientTypeChoices : sexChoices;
-  document.getElementById("pickerTitle").textContent = type === "clientType" ? "Choose Client Type" : "Choose Sex";
+  const choices = type === "clientType"
+    ? clientTypeChoices
+    : type === "sex"
+      ? sexChoices
+      : serviceChoices;
+  document.getElementById("pickerTitle").textContent =
+    type === "clientType" ? "Choose Client Type" :
+    type === "sex" ? "Choose Sex" : "Choose Service Availed";
   const container = document.getElementById("pickerOptions");
   container.innerHTML = "";
   choices.forEach(choice => {
@@ -243,8 +264,8 @@ function validateClientPage() {
   if (!document.getElementById("sex").value) return showError("clientPageError", "Please select your sex."), false;
   const age = Number(document.getElementById("age").value);
   if (!Number.isInteger(age) || age < 1 || age > 120) return showError("clientPageError", "Please enter a valid age from 1 to 120."), false;
-  if (!document.getElementById("address").value.trim()) return showError("clientPageError", "Please enter your region of residence."), false;
-  if (!document.getElementById("serviceAvailed").value.trim()) return showError("clientPageError", "Please enter the service you availed."), false;
+  if (!document.getElementById("address").value.trim()) return showError("clientPageError", "Please enter your address."), false;
+  if (!document.getElementById("serviceAvailed").value) return showError("clientPageError", "Please select the service you availed."), false;
   return true;
 }
 
@@ -310,19 +331,26 @@ function startThankYouCountdown() {
   thankYouTimer = setInterval(() => {
     countdownValue -= 1;
     document.getElementById("thankYouCountdown").textContent = countdownValue;
-    if (countdownValue <= 0) resetKioskToWelcome();
+    if (countdownValue <= 0) returnToDashboard();
   }, 1000);
+}
+
+function returnToDashboard() {
+  clearInterval(thankYouTimer);
+  window.location.href = DASHBOARD_URL;
 }
 
 function resetKioskToWelcome() {
   clearInterval(thankYouTimer);
   thankYouTimer = null;
   document.getElementById("csmForm").reset();
+  document.getElementById("address").value = "Daplian, San Fernando";
   document.getElementById("consentCheckbox").checked = false;
   document.getElementById("clientType").value = "";
   document.getElementById("sex").value = "";
   document.getElementById("clientTypePicker").innerHTML = 'Choose client type <span>⌄</span>';
   document.getElementById("sexPicker").innerHTML = 'Choose sex <span>⌄</span>';
+  document.getElementById("serviceAvailedPicker").innerHTML = 'Choose service availed <span>⌄</span>';
   ["cc1Options","cc2Options","cc3Options"].forEach(id => {
     const el = document.getElementById(id);
     delete el.dataset.value;
@@ -344,16 +372,9 @@ function resetKioskToWelcome() {
 
 function configureDashboardLink() {
   const link = document.getElementById("dashboardLink");
-  if (DASHBOARD_URL) {
-    link.href = DASHBOARD_URL;
-    link.target = "_blank";
-    link.rel = "noopener";
-  } else {
-    link.addEventListener("click", event => {
-      event.preventDefault();
-      alert("Please add the DES iApps Dashboard URL to DASHBOARD_URL in js/app.js.");
-    });
-  }
+  link.href = DASHBOARD_URL;
+  link.target = "_blank";
+  link.rel = "noopener";
 }
 
 function initialize() {
@@ -367,6 +388,7 @@ function initialize() {
   document.getElementById("proceedButton").addEventListener("click", startSurvey);
   document.getElementById("clientTypePicker").addEventListener("click", () => openPicker("clientType"));
   document.getElementById("sexPicker").addEventListener("click", () => openPicker("sex"));
+  document.getElementById("serviceAvailedPicker").addEventListener("click", () => openPicker("serviceAvailed"));
   document.getElementById("closePickerButton").addEventListener("click", closePicker);
   document.getElementById("pickerOverlay").addEventListener("click", event => {
     if (event.target.id === "pickerOverlay") closePicker();
@@ -385,7 +407,7 @@ function initialize() {
   });
   document.getElementById("feedbackBackButton").addEventListener("click", () => showSurveyPage("sqd"));
   document.getElementById("csmForm").addEventListener("submit", submitCsm);
-  document.getElementById("returnNowButton").addEventListener("click", resetKioskToWelcome);
+  document.getElementById("returnNowButton").addEventListener("click", returnToDashboard);
   checkApiConnection();
 }
 
