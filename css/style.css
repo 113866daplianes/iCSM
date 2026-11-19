@@ -367,3 +367,52 @@ body{margin:0;min-height:100vh;background:
 @media(max-width:560px){.admin-page-heading{align-items:flex-start}.admin-page-heading h3{font-size:22px}.admin-page-heading p{font-size:14px}}
 
 .report-history-delete{border:1px solid #e5b9a0;background:#fff8f3;color:#a3440d;border-radius:7px;padding:7px 11px;font:inherit;font-weight:800;cursor:pointer;white-space:nowrap}.report-history-delete:hover{background:#ffeadc}.report-history-delete:disabled{opacity:.55;cursor:wait}
+
+
+/* Orange Aero header refresh — iDocs-inspired balanced action stack */
+.header-inner{min-height:210px}
+.header-actions{width:314px;min-width:314px;align-items:stretch;gap:12px}
+.dashboard-link,
+.admin-entry-button{
+  width:100%;min-height:78px;justify-content:center;align-self:stretch;
+  border-radius:18px;font-size:18px;font-weight:900;white-space:nowrap;
+}
+.dashboard-link{
+  gap:12px;padding:12px 18px;
+  background:linear-gradient(180deg,#fff 0%,#fffaf5 58%,#f5dfcc 100%);
+  border:1px solid rgba(255,255,255,.98);
+  color:#87340d;box-shadow:0 5px 0 rgba(112,47,12,.22),0 9px 18px rgba(70,25,5,.14),inset 0 2px 0 #fff;
+}
+.dashboard-link img{width:48px;height:48px;border-radius:12px;border:2px solid #e87522}
+.admin-entry-button{
+  display:flex;align-items:center;justify-content:center;gap:11px;
+  padding:12px 18px;border:1px solid rgba(255,255,255,.58);
+  border-radius:18px;
+  background:linear-gradient(180deg,#ff9b37 0%,#f36b0b 48%,#c83b08 100%);
+  color:#fff;font:900 18px "Nunito Sans",Arial,sans-serif;
+  text-shadow:0 1px 2px rgba(95,29,0,.35);
+  box-shadow:0 5px 0 #9f3008,0 9px 18px rgba(70,25,5,.16),inset 0 2px 0 rgba(255,255,255,.45);
+}
+.admin-entry-button:hover{background:linear-gradient(180deg,#ffad51 0%,#f47713 48%,#d94708 100%);transform:translateY(-1px)}
+.admin-entry-icon{font-size:21px;line-height:1}
+.admin-entry-arrow{margin-left:2px;color:#fff0d8;font-size:21px;line-height:1}
+@media(max-width:760px){
+  .header-inner{align-items:center;flex-wrap:wrap}
+  .brand-lockup{flex:1 1 100%}
+  .header-actions{width:100%;min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .dashboard-link,.admin-entry-button{min-height:58px;padding:9px 10px;border-radius:14px;font-size:14px}
+  .dashboard-link img{width:34px;height:34px}
+  .admin-entry-icon{font-size:17px}
+  .admin-entry-arrow{font-size:17px}
+}
+@media(max-width:430px){
+  .header-inner{padding:16px;gap:14px}
+  .brand-lockup{padding-right:0;gap:11px}
+  .app-icon{width:68px;height:68px;border-radius:15px}
+  .school-name{font-size:9px;letter-spacing:1px}
+  .brand-copy h1{font-size:38px}
+  .brand-copy p{font-size:12px;margin-top:5px}
+  .header-actions{position:static;grid-template-columns:1fr 1fr;width:100%;gap:8px}
+  .dashboard-link,.admin-entry-button{min-height:54px;padding:8px 6px;font-size:12px;gap:6px}
+  .dashboard-link img{width:28px;height:28px}
+}
