@@ -241,3 +241,88 @@ body{margin:0;min-height:100vh;background:
 
 /* Official CSM service-category mapping notices */
 .analytics-warning,.analytics-note{padding:10px 12px;border-radius:10px;font-size:.86rem;line-height:1.45;margin:10px 0 14px}.analytics-warning{background:#fff3e8;border:1px solid #f2c49d;color:#87420f}.analytics-note{background:#edf7ef;border:1px solid #c5e2cb;color:#285b35}
+
+
+/* PHASE 4 — larger, more comfortable Admin Dashboard typography */
+.admin-dashboard-screen{max-width:1280px;font-size:16px}
+.admin-topbar h2{font-size:clamp(30px,3vw,38px)}
+.admin-topbar .step-label{font-size:13px;letter-spacing:1.5px}
+.admin-logout-button{font-size:14px;min-height:44px;padding:10px 16px}
+.admin-filter-heading h3,.analytics-section-heading h3{font-size:21px}
+.admin-filter-heading p,.analytics-section-heading p{font-size:15px;line-height:1.55}
+.admin-filters label{font-size:14px;gap:8px}
+.admin-filters select{font-size:15px;min-height:48px;padding:11px 13px}
+.admin-period-caption{font-size:14px;line-height:1.5}
+.admin-refresh-button{font-size:14px;padding:10px 15px}
+.admin-loading,.admin-error{font-size:16px;padding:22px}
+.analytics-kpi{padding:20px}
+.analytics-kpi span{font-size:14px}
+.analytics-kpi strong{font-size:clamp(30px,3vw,40px)}
+.analytics-kpi small{font-size:13px;line-height:1.4}
+.assessment-card{padding:16px;gap:13px}
+.assessment-icon{width:32px;height:32px;font-size:17px}
+.assessment-card h4{font-size:16px}
+.assessment-card p{font-size:14px;line-height:1.6}
+.analytics-scale{font-size:13px}
+.analytics-subheading{font-size:15px}
+.analytics-metric-list{gap:13px}
+.analytics-metric-label{font-size:14px;gap:12px}
+.analytics-metric-label b{font-size:14px}
+.analytics-metric-label b small{font-size:12px}
+.analytics-track{height:10px}
+.sqd-rating-card{padding:16px}
+.sqd-rating-top{font-size:15px}
+.sqd-rating-top strong{font-size:22px}
+.sqd-rating-top small{font-size:12px}
+.sqd-rating-bottom{font-size:12px}
+.analytics-details-grid summary{font-size:16px;padding:18px 20px}
+.analytics-detail-content{padding:0 20px 20px}
+.analytics-empty{font-size:14px;line-height:1.6}
+.feedback-count{font-size:14px}
+.feedback-list{font-size:14px;line-height:1.65}
+.analytics-footnote{font-size:12px;line-height:1.6}
+.donut-layout{gap:18px}
+.analytics-donut{width:132px;height:132px}
+.analytics-donut:before{inset:17px}
+.analytics-donut b{font-size:22px}
+.analytics-donut small{font-size:11px}
+.donut-legend{gap:9px}
+.donut-legend>div{font-size:13px;gap:8px}
+.donut-legend i{width:10px;height:10px}
+.donut-legend b{font-size:13px}
+.trend-bars{min-height:190px}
+.trend-column{height:170px}
+.trend-value{font-size:13px;height:16px}
+.trend-column small{font-size:12px}
+.report-center{margin-top:22px}
+.report-badge{padding:7px 10px;border-radius:999px;background:#fff1e4;color:#a54510;font-size:12px;font-weight:900;white-space:nowrap}
+.report-mode-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:16px}
+.report-mode-card{padding:22px;border:1px solid #efd8c5;border-radius:16px;background:linear-gradient(145deg,#fff,#fffaf5)}
+.report-mode-icon{display:grid;place-items:center;width:42px;height:42px;margin-bottom:12px;border-radius:12px;background:#fff0e1;color:#c65312;font-size:25px;font-weight:900}
+.report-mode-card h4{margin:0 0 8px;color:#8f390e;font-size:19px}
+.report-mode-card p,.report-mode-card li{color:#5e6e7c;font-size:14px;line-height:1.6}
+.report-mode-card ul{padding-left:20px;margin:12px 0}
+.report-schedule-note,.report-period-preview,.report-template-note{padding:12px 14px;border-radius:10px;background:#fff3e7;color:#86502d;font-size:13px;line-height:1.55}
+.report-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.report-form-grid label{display:flex;flex-direction:column;gap:7px;color:#435566;font-size:14px;font-weight:900}
+.report-form-grid select{width:100%;min-height:46px;padding:10px 12px;border:1px solid #e6cdb8;border-radius:10px;background:white;color:#304253;font:700 15px "Nunito Sans",Arial,sans-serif}
+.report-period-preview{margin:4px 0 14px;background:#f5f8fb;color:#455d70;font-size:14px}
+.report-generate-button{width:100%;min-height:52px;font-size:16px}
+.report-result{display:flex;flex-direction:column;gap:8px;margin:16px 0;padding:17px 19px;border-radius:12px;font-size:14px;line-height:1.55}
+.report-result strong{font-size:17px}
+.report-result a{color:#93400f;font-weight:900;text-decoration:underline;overflow-wrap:anywhere}
+.report-result-pending{background:#fff8e9;border:1px solid #ecd9ad;color:#77531a}
+.report-result-success{background:#eff9f0;border:1px solid #c8e4ce;color:#285c35}
+.report-result-error{background:#fff1ef;border:1px solid #efc2b9;color:#a32d20}
+.report-history-block{margin-top:22px}
+.report-history-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.report-history-heading h4{margin:0;color:#8f390e;font-size:18px}
+.report-history-table-wrap{overflow-x:auto}
+.report-history-table{width:100%;border-collapse:collapse;font-size:13px}
+.report-history-table th,.report-history-table td{padding:12px 10px;border-bottom:1px solid #f0e3d9;text-align:left;vertical-align:top}
+.report-history-table th{color:#7b3b18;background:#fff7ef;font-weight:900;white-space:nowrap}
+.report-history-table td{color:#526575;line-height:1.5}
+.report-history-table a{color:#a3440d;font-weight:900}
+.report-template-note{margin-top:16px;background:#f6f7f8;color:#64717b}
+@media(max-width:800px){.report-mode-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.admin-dashboard-screen{font-size:15px}.admin-filter-heading h3,.analytics-section-heading h3{font-size:19px}.admin-filter-heading p,.analytics-section-heading p{font-size:14px}.admin-filters label{font-size:13px}.admin-filters select{font-size:14px}.analytics-kpi span{font-size:13px}.analytics-kpi small{font-size:12px}.assessment-card h4{font-size:15px}.assessment-card p{font-size:13px}.analytics-metric-label{font-size:13px}.analytics-metric-label b{font-size:13px}.report-form-grid{grid-template-columns:1fr}.report-history-heading{align-items:flex-start;flex-direction:column}.report-history-table{font-size:12px}}

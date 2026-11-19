@@ -111,6 +111,32 @@
               <details class="analytics-section"><summary>Client Feedback</summary><div id="analyticsFeedback" class="analytics-detail-content"></div></details>
               <details class="analytics-section"><summary>Demographic Profile</summary><div id="analyticsDemographics" class="analytics-detail-content"></div></details>
             </div>
+            <section class="analytics-section report-center" id="reportCenter">
+              <div class="analytics-section-heading"><div><h3>Official CSM Report Generation</h3><p>Generate the official DepEd CSM Excel submission using the selected survey records.</p></div><span class="report-badge">EXCEL REPORT</span></div>
+              <div class="report-mode-grid">
+                <article class="report-mode-card report-automated-card">
+                  <div class="report-mode-icon">↻</div><h4>Automated Generation</h4>
+                  <p>Generate quarterly reports after each quarter closes and an annual report after the calendar year ends.</p>
+                  <ul><li>Quarterly: Q1, Q2, Q3 and Q4</li><li>Annual: January–December</li><li>Saved automatically to the configured Google Drive folder</li></ul>
+                  <div class="report-schedule-note">Requires the official template ID and the Apps Script daily trigger to be configured once.</div>
+                </article>
+                <article class="report-mode-card report-manual-card">
+                  <div class="report-mode-icon">▤</div><h4>Manual Generation</h4>
+                  <p>Select a reporting period and generate the Excel file immediately.</p>
+                  <div class="report-form-grid">
+                    <label>Report type<select id="reportType"><option value="month">Monthly</option><option value="quarter">Quarterly</option><option value="year">Annual</option></select></label>
+                    <label>Year<select id="reportYear"></select></label>
+                    <label id="reportMonthWrap">Month<select id="reportMonth"></select></label>
+                    <label id="reportQuarterWrap" hidden>Quarter<select id="reportQuarter"><option value="1">Q1 · January–March</option><option value="2">Q2 · April–June</option><option value="3">Q3 · July–September</option><option value="4">Q4 · October–December</option></select></label>
+                  </div>
+                  <div class="report-period-preview" id="reportPeriodPreview">Preparing reporting period…</div>
+                  <button type="button" class="aero-button primary-button report-generate-button" id="generateReportButton">Generate Excel Report</button>
+                </article>
+              </div>
+              <div class="report-result" id="reportResult" hidden aria-live="polite"></div>
+              <div class="report-history-block"><div class="report-history-heading"><h4>Report Generation History</h4><button type="button" class="admin-refresh-button" id="refreshReportHistoryButton">↻ Refresh History</button></div><div id="reportHistory"><p class="analytics-empty">Loading report history…</p></div></div>
+              <p class="report-template-note">The generator uses a Google Sheets-converted copy of the supplied official 85-column Excel template. It does not modify the survey response database.</p>
+            </section>
             <div class="analytics-footnote">Analytics are based on submitted records within the selected date range. Small sample sizes should be interpreted cautiously. This dashboard is for internal monitoring and does not replace the official CSM submission report.</div>
           </div>
         </div>

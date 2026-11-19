@@ -401,6 +401,7 @@ async function submitAdminLogin(event) {
     pinInput.value = "";
     showScreen("adminDashboard");
     await loadAdminOverview();
+    await loadReportHistory();
   } catch (error) {
     showError("adminLoginError", error.message || "Unable to verify administrator access.");
     pinInput.value = "";
@@ -547,6 +548,92 @@ function initializeAnalyticsControls() {
   document.getElementById("adminRefreshButton").addEventListener("click", loadAdminOverview);
 }
 
+function initializeReportControls() {
+  const year = document.getElementById("reportYear");
+  const currentYear = new Date().getFullYear();
+  year.innerHTML = Array.from({length: Math.max(1, currentYear - 2025 + 1)}, (_, i) => currentYear - i)
+    .map(y => `<option value="${y}">${y}</option>`).join("");
+  const month = document.getElementById("reportMonth");
+  month.innerHTML = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+    .map((name, i) => `<option value="${i + 1}">${name}</option>`).join("");
+  month.value = String(new Date().getMonth() + 1);
+  document.getElementById("reportQuarter").value = String(Math.floor(new Date().getMonth() / 3) + 1);
+  ["reportType","reportYear","reportMonth","reportQuarter"].forEach(id => {
+    document.getElementById(id).addEventListener("change", updateReportPeriodPreview);
+  });
+  document.getElementById("generateReportButton").addEventListener("click", generateManualReport);
+  document.getElementById("refreshReportHistoryButton").addEventListener("click", loadReportHistory);
+  updateReportPeriodPreview();
+}
+
+function updateReportPeriodPreview() {
+  const type = document.getElementById("reportType").value;
+  const year = Number(document.getElementById("reportYear").value);
+  const month = Number(document.getElementById("reportMonth").value);
+  const quarter = Number(document.getElementById("reportQuarter").value);
+  document.getElementById("reportMonthWrap").hidden = type !== "month";
+  document.getElementById("reportQuarterWrap").hidden = type !== "quarter";
+  const today = new Date(); today.setHours(0,0,0,0);
+  let start, end;
+  if (type === "month") { start = new Date(year, month - 1, 1); end = new Date(year, month, 0); }
+  else if (type === "quarter") { start = new Date(year, (quarter - 1) * 3, 1); end = new Date(year, quarter * 3, 0); }
+  else { start = new Date(year, 0, 1); end = new Date(year, 11, 31); }
+  const preview = document.getElementById("reportPeriodPreview");
+  if (start > today) {
+    preview.textContent = "This reporting period has not started yet.";
+    document.getElementById("generateReportButton").disabled = true;
+    return;
+  }
+  if (end > today) end = today;
+  const fmt = d => d.toLocaleDateString("en-PH", {day:"numeric", month:"long", year:"numeric"});
+  preview.textContent = `Report coverage: ${fmt(start)} to ${fmt(end)}${end.getTime() === today.getTime() ? " (up to today)" : ""}`;
+  document.getElementById("generateReportButton").disabled = false;
+}
+
+async function generateManualReport() {
+  const button = document.getElementById("generateReportButton");
+  const resultBox = document.getElementById("reportResult");
+  const data = {
+    token: adminSessionToken,
+    reportType: document.getElementById("reportType").value,
+    year: Number(document.getElementById("reportYear").value),
+    month: Number(document.getElementById("reportMonth").value),
+    quarter: Number(document.getElementById("reportQuarter").value)
+  };
+  if (!confirm("Generate the official CSM Excel report for the displayed reporting period?")) return;
+  button.disabled = true; button.textContent = "Generating report…";
+  resultBox.hidden = false; resultBox.className = "report-result report-result-pending";
+  resultBox.textContent = "Collecting responses, validating totals and preparing the Excel workbook. Please wait…";
+  try {
+    const result = await apiRequest("adminGenerateCsmReport", data);
+    if (!result || !result.report || !result.downloadUrl) throw new Error("The report service returned an incomplete result.");
+    resultBox.className = "report-result report-result-success";
+    resultBox.innerHTML = `<strong>Report generated successfully.</strong><span>${safeText(result.report.label)} · ${formatCount(result.totalClients)} client responses</span><a href="${safeText(result.downloadUrl)}" target="_blank" rel="noopener">Download Excel report ↗</a><a href="${safeText(result.report.url)}" target="_blank" rel="noopener">Open in Google Drive</a>`;
+    await loadReportHistory();
+  } catch (error) {
+    resultBox.className = "report-result report-result-error";
+    resultBox.textContent = error.message || "Unable to generate the report.";
+    if ((error.message || "").toLowerCase().includes("session")) {
+      adminSessionToken = null; showScreen("adminLogin"); showError("adminLoginError", "Your administrator session has expired. Please log in again.");
+    }
+  } finally {
+    button.disabled = false; button.textContent = "Generate Excel Report";
+  }
+}
+
+async function loadReportHistory() {
+  const container = document.getElementById("reportHistory");
+  container.innerHTML = `<p class="analytics-empty">Loading report history…</p>`;
+  try {
+    const result = await apiRequest("adminGetReportHistory", {token: adminSessionToken});
+    const items = result.history || [];
+    if (!items.length) { container.innerHTML = `<p class="analytics-empty">No reports have been generated yet.</p>`; return; }
+    container.innerHTML = `<div class="report-history-table-wrap"><table class="report-history-table"><thead><tr><th>Report</th><th>Coverage</th><th>Generated</th><th>Mode</th><th>File</th></tr></thead><tbody>${items.map(item => `<tr><td>${safeText(item.label)}</td><td>${safeText(item.start)} – ${safeText(item.end)}</td><td>${safeText(item.generatedAt)}</td><td>${safeText(item.mode)}</td><td><a href="${safeText(item.url)}" target="_blank" rel="noopener">Open ↗</a></td></tr>`).join("")}</tbody></table></div>`;
+  } catch (error) {
+    container.innerHTML = `<p class="analytics-warning">${safeText(error.message || "Unable to load report history.")}</p>`;
+  }
+}
+
 async function logoutAdmin() {
   const token = adminSessionToken;
   adminSessionToken = null;
@@ -571,6 +658,7 @@ function initialize() {
   renderAllSqdQuestions();
   configureDashboardLink();
   initializeAnalyticsControls();
+  initializeReportControls();
 
   document.getElementById("consentCheckbox").addEventListener("change", updateProceedButton);
   document.getElementById("proceedButton").addEventListener("click", startSurvey);
