@@ -692,3 +692,20 @@ function initialize() {
 }
 
 document.addEventListener("DOMContentLoaded", initialize);
+
+function initializeAdminSectionNavigation() {
+  const links = [...document.querySelectorAll("[data-admin-nav]")];
+  if (!links.length) return;
+  links.forEach(link => {
+    link.addEventListener("click", event => {
+      event.preventDefault();
+      const target = document.getElementById(link.dataset.adminNav);
+      if (!target) return;
+      links.forEach(item => item.classList.toggle("active", item === link));
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (history.replaceState) history.replaceState(null, "", `#${link.dataset.adminNav}`);
+    });
+  });
+}
+
+initializeAdminSectionNavigation();
