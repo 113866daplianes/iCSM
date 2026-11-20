@@ -47,3 +47,7 @@ The header's Go to iApps Dashboard shortcut is visible only on the main welcome 
 
 ## Admin access — Phase 1
 A discreet Admin Dashboard button is shown below the iApps Dashboard shortcut on the welcome screen. The PIN is verified by Apps Script; it is not stored in frontend code. Successful login creates a 30-minute server-side session. The current admin screen is a protected foundation; analytics and report generation will be added in subsequent phases.
+
+
+## Basic browser UI deterrents (v8)
+The frontend disables the context menu and intercepts common DevTools / View Source keyboard shortcuts (F12, Ctrl/Cmd+Shift+I/J/C/K, Ctrl/Cmd+U). These are casual-use deterrents only. They cannot prevent users from opening developer tools through browser menus, inspecting network traffic, viewing downloaded frontend files, or discovering the Apps Script endpoint. Do not place secrets, PINs, access tokens, or privileged logic in frontend code. Protect every sensitive Apps Script action with server-side authentication and authorization.

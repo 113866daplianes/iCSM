@@ -726,6 +726,35 @@ function initialize() {
   checkApiConnection();
 }
 
+
+/****************************************************
+ * BASIC BROWSER UI DETERRENTS
+ * These discourage casual inspection only. They do NOT
+ * secure the Apps Script API or prevent DevTools access.
+ ****************************************************/
+function installBrowserDeterrents() {
+  // Disable the standard right-click context menu.
+  document.addEventListener("contextmenu", event => {
+    event.preventDefault();
+  }, true);
+
+  // Discourage common browser inspection / source shortcuts.
+  document.addEventListener("keydown", event => {
+    const key = String(event.key || "").toLowerCase();
+    const blocked =
+      key === "f12" ||
+      ((event.ctrlKey || event.metaKey) && event.shiftKey && ["i", "j", "c", "k"].includes(key)) ||
+      ((event.ctrlKey || event.metaKey) && ["u"].includes(key));
+
+    if (blocked) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
+}
+
+installBrowserDeterrents();
+
 document.addEventListener("DOMContentLoaded", initialize);
 
 function initializeAdminSectionNavigation() {
